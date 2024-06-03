@@ -26,7 +26,7 @@ public class BoardController {
 	@RequestMapping(value="/board/list.do",method=RequestMethod.GET)
 	public String boardList(Model model) {
 		logger.info(">>GET - /board/list.do 요청 받음");
-		
+			
 		List<BoardDTO>bList=dao.selectAll();
 		logger.info(bList.toString());
 		
@@ -47,6 +47,10 @@ public class BoardController {
 	public String boardDetail(BoardDTO dto,Model model) {
 		logger.info(">>POST - /board/detail.do 요청 받음");
 		logger.info("요청한 상세정보 : "+dao.findBySeq(dto.getSeq()));
+		
+		//상세보기를 누르면 조회수가 +1되어야 함
+		dao.cntUpdate(dto);
+		
 		model.addAttribute("bData",dao.findBySeq(dto.getSeq()));
 
 		return "board/detail";

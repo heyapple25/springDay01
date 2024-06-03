@@ -43,4 +43,9 @@ public class BoardDAO {
 	public void delete(BoardDTO dto) {
 		bList.remove(bList.indexOf(dto));
 	}
+	
+	public void cntUpdate(BoardDTO dto) {
+		BoardDTO cntBefore=bList.get(bList.indexOf(dto));
+		cntBefore.setCnt(cntBefore.getCnt()+1);
+	}
 }
