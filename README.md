@@ -17,18 +17,18 @@
 
 characterEncodingFilter는 한글이 깨지지 않도록 Encoding Character Set을 처리해주는 fileter이다. web.xml에 다음과 같이 추가해준다.
 ```xml
-	<filter>       
-		 <filter-name>encodingFilter</filter-name>        
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-	    <init-param>            
-			<param-name>encoding</param-name>            
-			<param-value>UTF-8</param-value>        
-		</init-param>
-	</filter>
-	<filter-mapping>        
-		<filter-name>encodingFilter</filter-name>        
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+<filter>       
+	 <filter-name>encodingFilter</filter-name>        
+	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>            
+		<param-name>encoding</param-name>            
+		<param-value>UTF-8</param-value>        
+	</init-param>
+</filter>
+<filter-mapping>        
+	<filter-name>encodingFilter</filter-name>        
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
 ```
 ## 추가로 알게된 점
 - 인자로 값을 받을 때 name속성을 이용해서 받을 수도 있다.
