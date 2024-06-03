@@ -1,13 +1,18 @@
+## 과제
+
+과제 : Servlet으로 구현한 게시판을 스프링 프레임워크에 적용해서 CRUD 기능을 구현 해 보세요.
+
 ## 과제 결과
-![ezgif-1-2339926108](https://github.com/heyapple25/springDay01/assets/56960059/7c2fafba-cd60-4da1-a237-7574ae1d2bf2)
+![ezgif-6-58f1d20f32](https://github.com/heyapple25/springDay01/assets/56960059/d49629cb-b7eb-4862-8319-7cedd90e1ddc)
 
 
-추가, 삭제, 수정(수정시 날짜는 (m) 표시를 해줌) 기능을 추가했다.
+조회수 기능, 추가, 삭제, 수정(수정시 날짜는 (m) 표시를 해줌) 기능을 추가했다.
 
 ---
 
 ## 발생했던 오류
-1. 한글 깨짐
+- 한글 깨짐
+
 값을 POST로 넘기는 과정에서 한글이 깨지는 현상이 발생했다.
 
 characterEncodingFilter는 한글이 깨지지 않도록 Encoding Character Set을 처리해주는 fileter이다. web.xml에 다음과 같이 추가해준다.
@@ -26,9 +31,10 @@ characterEncodingFilter는 한글이 깨지지 않도록 Encoding Character Set�
 	</filter-mapping>
 ```
 ## 추가로 알게된 점
-1. 인자로 값을 받을 때 name속성을 이용해서 받을 수도 있다.
+- 인자로 값을 받을 때 name속성을 이용해서 받을 수도 있다.
 ![12512512](https://github.com/heyapple25/springDay01/assets/56960059/ed320ac5-1138-4a8e-a3c3-1c7d88ab60da)
-
+- [README.md 작성 시 참고](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+- ${\textsf{\color{red}git push가 안되길래 -f 옵션을 지정해버리니까 전에 올렸던 README.md가 증발했다. 다음에는 신중하게 push하자....}}$
 ---
 
 ##### BoardController.java
@@ -48,7 +54,7 @@ public class BoardController {
 	@RequestMapping(value="/board/list.do",method=RequestMethod.GET)
 	public String boardList(Model model) {
 		logger.info(">>GET - /board/list.do 요청 받음");
-		
+			
 		List<BoardDTO>bList=dao.selectAll();
 		logger.info(bList.toString());
 		
@@ -69,6 +75,10 @@ public class BoardController {
 	public String boardDetail(BoardDTO dto,Model model) {
 		logger.info(">>POST - /board/detail.do 요청 받음");
 		logger.info("요청한 상세정보 : "+dao.findBySeq(dto.getSeq()));
+		
+		//상세보기를 누르면 조회수가 +1되어야 함
+		dao.cntUpdate(dto);
+		
 		model.addAttribute("bData",dao.findBySeq(dto.getSeq()));
 
 		return "board/detail";
@@ -105,18 +115,10 @@ public class BoardController {
 	}
 }
 
+
 ```
 ##### BoardDAO.java
 ```java
-package com.example.myweb.board;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 @Repository
 public class BoardDAO {
 	public static final List<BoardDTO> bList=new ArrayList<BoardDTO>();
@@ -152,6 +154,11 @@ public class BoardDAO {
 	}
 	public void delete(BoardDTO dto) {
 		bList.remove(bList.indexOf(dto));
+	}
+	
+	public void cntUpdate(BoardDTO dto) {
+		BoardDTO cntBefore=bList.get(bList.indexOf(dto));
+		cntBefore.setCnt(cntBefore.getCnt()+1);
 	}
 }
 ```
