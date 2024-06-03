@@ -42,7 +42,6 @@ public class BoardController {
 		return "board/insert";
 	}
 	
-	
 	//데이터 상세보기
 	@RequestMapping(value="/board/detail.do",method=RequestMethod.GET)
 	public String boardDetail(BoardDTO dto,Model model) {
@@ -52,13 +51,7 @@ public class BoardController {
 
 		return "board/detail";
 	}
-	
-	//수정 페이지로 forward
-	@RequestMapping(value="/board/update.do",method=RequestMethod.GET)
-	public String boardUpdate() {
-		logger.info(">>GET - /board/update.do 요청 받음");
-		return "board/update";
-	}
+
 	//데이터 삭제 후 목록으로 redirect
 	@RequestMapping(value="/board/delete.do",method=RequestMethod.GET)
 	public String boardDelete(int seq) {
